@@ -38,6 +38,8 @@ import static com.owant.thinkmap.util.DensityUtils.dp2px;
 public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleGestureListener {
 
     private static final String TAG = "TreeView";
+    private static int drawLineToViewChoice = 1;
+
 
     private Context mContext;
 
@@ -141,21 +143,15 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
 
         if (item == -1) {
 
-            animator1 = ObjectAnimator.ofFloat(TreeView.this, "scaleX", getScaleX(), 0.3f)
-                    .setDuration(500);
-            animator2 = ObjectAnimator.ofFloat(TreeView.this, "scaleY", getScaleX(), 0.3f)
-                    .setDuration(500);
+            animator1 = ObjectAnimator.ofFloat(TreeView.this, "scaleX", getScaleX(), 0.3f).setDuration(500);
+            animator2 = ObjectAnimator.ofFloat(TreeView.this, "scaleY", getScaleX(), 0.3f).setDuration(500);
 
         } else if (item == 0) {
-            animator1 = ObjectAnimator.ofFloat(TreeView.this, "scaleX", getScaleX(), 1.0f)
-                    .setDuration(500);
-            animator2 = ObjectAnimator.ofFloat(TreeView.this, "scaleY", getScaleX(), 1.0f)
-                    .setDuration(500);
+            animator1 = ObjectAnimator.ofFloat(TreeView.this, "scaleX", getScaleX(), 1.0f).setDuration(500);
+            animator2 = ObjectAnimator.ofFloat(TreeView.this, "scaleY", getScaleX(), 1.0f).setDuration(500);
         } else {
-            animator1 = ObjectAnimator.ofFloat(TreeView.this, "scaleX", getScaleX(), 1.6f)
-                    .setDuration(500);
-            animator2 = ObjectAnimator.ofFloat(TreeView.this, "scaleY", getScaleX(), 1.6f)
-                    .setDuration(500);
+            animator1 = ObjectAnimator.ofFloat(TreeView.this, "scaleX", getScaleX(), 1.6f).setDuration(500);
+            animator2 = ObjectAnimator.ofFloat(TreeView.this, "scaleY", getScaleX(), 1.6f).setDuration(500);
         }
 
         animator1.setInterpolator(easeCubicInterpolator);
@@ -236,7 +232,18 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
             for (NodeModel<String> node : childNodes) {
 
                 //连线
-                drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
+                switch (drawLineToViewChoice) {
+                    case 1:
+                        drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
+                        break;
+                    case 2:
+                        drawLineToViewSecond(canvas, fatherView, findNodeViewFromNodeModel(node));
+                        break;
+                    case 3:
+                        drawLineToViewThird(canvas, fatherView, findNodeViewFromNodeModel(node));
+                        break;
+                    default:
+                }
 
                 //递归
                 drawTreeLine(canvas, node);
@@ -283,7 +290,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         mPath.reset();
         mPath.moveTo(formX, formY);
         //贝塞尔二次曲线
-        mPath.lineTo(toX,toY);
+        mPath.lineTo(toX, toY);
 //        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
 
         canvas.drawPath(mPath, mPaint);
@@ -321,7 +328,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         mPath.reset();
         mPath.moveTo(formX, formY);
         //贝塞尔二次曲线
-        mPath.lineTo(toX,toY);
+        mPath.lineTo(toX, toY);
 //        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
 
         canvas.drawPath(mPath, mPaint);
@@ -359,7 +366,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         mPath.reset();
         mPath.moveTo(formX, formY);
         //贝塞尔二次曲线
-        mPath.lineTo(toX,toY);
+        mPath.lineTo(toX, toY);
 //        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
 
         canvas.drawPath(mPath, mPaint);
@@ -581,7 +588,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
 //        mTreeModel.addNode(getCurrentFocusNode(), addNode);
 //        addNodeViewToGroup(addNode);
         NodeModel<String> addNode = new NodeModel<>(nodeValue);
-        mTreeModel.addSubNode(getCurrentFocusNode(),addNode);
+        mTreeModel.addSubNode(getCurrentFocusNode(), addNode);
         addNodeViewToGroup(addNode);
     }
 
