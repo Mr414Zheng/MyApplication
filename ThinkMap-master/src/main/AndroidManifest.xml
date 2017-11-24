@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.owant.thinkmap">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+
+    <!--<application-->
+        <!--android:name=".App"-->
+        <!--android:allowBackup="true"-->
+        <!--android:icon="@mipmap/ic_launcher_app"-->
+        <!--android:label="${app_name}"-->
+        <!--android:supportsRtl="true"-->
+        <!--android:theme="@style/AppTheme">-->
+
+        <!--&lt;!&ndash;启动页&ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".ui.splash.SplashActivity"-->
+            <!--android:theme="@style/SplashStyle">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <!--&lt;!&ndash;工作区间&ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".ui.workspace.WorkSpaceActivity"-->
+            <!--android:launchMode="singleTask"-->
+            <!--android:theme="@style/AppTheme"/>-->
+
+        <!--&lt;!&ndash;编辑&ndash;&gt;-->
+        <!--<activity android:name=".ui.editmap.EditMapActivity">-->
+
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+
+                <!--<data android:scheme="file" />-->
+                <!--<data android:mimeType="application/*" />-->
+                <!--<data android:host="*" />-->
+                <!--<data android:pathPattern=".*\\.owant" />-->
+            <!--</intent-filter>-->
+
+            <!--<intent-filter>-->
+
+                <!--<action android:name="android.intent.action.VIEW" />-->
+
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+
+                <!--<data android:scheme="content" />-->
+                <!--<data android:mimeType="application/*" />-->
+                <!--<data android:host="*" />-->
+                <!--<data android:pathPattern=".*\\.owant" />-->
+
+            <!--</intent-filter>-->
+
+        <!--</activity>-->
+
+        <!--&lt;!&ndash;命令模式&ndash;&gt;-->
+        <!--<activity android:name=".ui.codemode.CodeModeActivity">-->
+
+        <!--</activity>-->
+
+        <!--&lt;!&ndash;关于&ndash;&gt;-->
+        <!--<activity-->
+            <!--android:name=".ui.about.AboutUsActivity"-->
+            <!--android:theme="@style/AppWithActionBar">-->
+
+        <!--</activity>-->
+
+        <!--&lt;!&ndash;百度app市场配置&ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="BDAPPID"-->
+            <!--android:value="9343944" />-->
+        <!--<meta-data-->
+            <!--android:name="BDAPPKEY"-->
+            <!--android:value="67aqsmHZEjmf62cBVvavBNr3FwXHVYns" />-->
+        <!--&lt;!&ndash;百度&ndash;&gt;-->
+
+    <!--</application>-->
+
+</manifest>
