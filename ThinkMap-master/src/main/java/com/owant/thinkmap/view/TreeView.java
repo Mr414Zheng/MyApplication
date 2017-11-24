@@ -242,8 +242,6 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
                     case 3:
                         drawLineToViewThird(canvas, fatherView, findNodeViewFromNodeModel(node));
                         break;
-                    case 4:
-                        break;
                     default:
                 }
 
@@ -316,12 +314,12 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         mPaint.setColor(mContext.getResources().getColor(R.color.chelsea_cucumber));
 
         int top = from.getTop();
-        int formY = top + from.getMeasuredHeight();
-        int formX = from.getRight() - from.getMeasuredWidth() / 2;
+        int formY = top + from.getMeasuredHeight() / 2;
+        int formX = from.getRight() + from.getMeasuredWidth();
 
         int top1 = to.getTop();
-        int toY = top1 + to.getMeasuredHeight() / 2;
-        int toX = formX;
+        int toY = top1;
+        int toX = to.getRight() - to.getMeasuredWidth() / 2;
 
 //        Path path = new Path();
 //        path.moveTo(formX, formY);
@@ -354,12 +352,12 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         mPaint.setColor(mContext.getResources().getColor(R.color.chelsea_cucumber));
 
         int top = from.getTop();
-        int formY = top + from.getMeasuredHeight() / 2;
-        int formX = from.getRight();
+        int formY = top + from.getMeasuredHeight();
+        int formX = from.getRight() - from.getMeasuredWidth() / 2;
 
         int top1 = to.getTop();
-        int toY = top1 + to.getMeasuredHeight() / 2;
-        int toX = to.getLeft();
+        int toY = top1;
+        int toX = to.getRight() - to.getMeasuredWidth() / 2;
 
 //        Path path = new Path();
 //        path.moveTo(formX, formY);
