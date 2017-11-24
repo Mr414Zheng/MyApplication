@@ -242,6 +242,8 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
                     case 3:
                         drawLineToViewThird(canvas, fatherView, findNodeViewFromNodeModel(node));
                         break;
+                    case 4:
+                        break;
                     default:
                 }
 
