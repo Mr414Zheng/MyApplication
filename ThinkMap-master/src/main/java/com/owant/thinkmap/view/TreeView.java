@@ -29,6 +29,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
 import static com.owant.thinkmap.util.DensityUtils.dp2px;
 
 /**
@@ -38,9 +39,7 @@ import static com.owant.thinkmap.util.DensityUtils.dp2px;
 public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleGestureListener {
 
     private static final String TAG = "TreeView";
-    private static int drawLineToViewChoice = 1;
-
-
+    public static int addNodeToViewChoice = 0;
     private Context mContext;
 
     public TreeModel<String> mTreeModel;
@@ -232,19 +231,13 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
             for (NodeModel<String> node : childNodes) {
 
                 //连线
-                switch (drawLineToViewChoice) {
-                    case 1:
-                        drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
-                        break;
-                    case 2:
-                        drawLineToViewSecond(canvas, fatherView, findNodeViewFromNodeModel(node));
-                        break;
-                    case 3:
-                        drawLineToViewThird(canvas, fatherView, findNodeViewFromNodeModel(node));
-                        break;
-                    default:
+                if (addNodeToViewChoice == 1) {
+                    drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
+                } else if (addNodeToViewChoice == 2) {
+                    drawLineToViewSecond(canvas, fatherView, findNodeViewFromNodeModel(node));
+                } else {
+                    drawLineToViewThird(canvas, fatherView, findNodeViewFromNodeModel(node));
                 }
-
                 //递归
                 drawTreeLine(canvas, node);
             }
@@ -294,6 +287,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
 //        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
 
         canvas.drawPath(mPath, mPaint);
+
     }
 
     private void drawLineToViewSecond(Canvas canvas, View from, View to) {
@@ -572,7 +566,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         NodeModel<String> addNode = new NodeModel<>(nodeValue);
         NodeModel<String> parentNode = getCurrentFocusNode().getParentNode();
         if (parentNode != null) {
-            mTreeModel.addNode(parentNode, addNode);
+            mTreeModel.addSubNodeSecond(parentNode, addNode);
             Log.i(TAG, "addNode: true");
             addNodeViewToGroup(addNode);
         }
@@ -588,7 +582,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
 //        mTreeModel.addNode(getCurrentFocusNode(), addNode);
 //        addNodeViewToGroup(addNode);
         NodeModel<String> addNode = new NodeModel<>(nodeValue);
-        mTreeModel.addSubNode(getCurrentFocusNode(), addNode);
+        mTreeModel.addSubNodeFirst(getCurrentFocusNode(), addNode);
         addNodeViewToGroup(addNode);
     }
 
