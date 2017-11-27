@@ -232,13 +232,9 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
             for (NodeModel<String> node : childNodes) {
 
                 //连线
-                if (node.floor == 1) {
-                    drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
-                } else if (node.floor == 2) {
-                    drawLineToViewSecond(canvas, fatherView, findNodeViewFromNodeModel(node));
-                } else {
-                    drawLineToViewThird(canvas, fatherView, findNodeViewFromNodeModel(node));
-                }
+
+                drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
+
                 //递归
                 drawTreeLine(canvas, node);
             }
@@ -263,99 +259,24 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         float width = 2f;
 
         mPaint.setStrokeWidth(dp2px(mContext, width));
-        mPaint.setColor(mContext.getResources().getColor(R.color.lineColor_first));
-
-        int top = from.getTop();
-        int formY = top + from.getMeasuredHeight() / 2;
-        int formX = from.getRight();
-
-        int top1 = to.getTop();
-        int toY = top1 + to.getMeasuredHeight() / 2;
-        int toX = to.getLeft();
-
-        mPath.reset();
-        mPath.moveTo(formX, formY);
-        //贝塞尔二次曲线
-        mPath.lineTo(toX, toY);
-//        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
-
-        canvas.drawPath(mPath, mPaint);
-
-    }
-
-    private void drawLineToViewSecond(Canvas canvas, View from, View to) {
-
-        if (to.getVisibility() == GONE) {
-            return;
-        }
-
-        mPaint.setStyle(Paint.Style.STROKE);
-
-        float width = 2f;
-
-        mPaint.setStrokeWidth(dp2px(mContext, width));
-        mPaint.setColor(mContext.getResources().getColor(R.color.lineColor_second));
-
-//        int top = from.getTop();
-//        int formY = top + from.getMeasuredHeight() / 2;
-//        int formX = from.getRight() + from.getMeasuredWidth();
-
-//        int top1 = to.getTop();
-//        int toY = top1;
-//        int toX = to.getRight() - to.getMeasuredWidth() / 2;
-        int top = from.getTop();
-        int formY = top + from.getMeasuredHeight() / 2;
-        int formX = from.getRight();
-
-        int top1 = to.getTop();
-        int toY = top1 + to.getMeasuredHeight() / 2;
-        int toX = to.getLeft();
-
-        mPath.reset();
-        mPath.moveTo(formX, formY);
-        //贝塞尔二次曲线
-        mPath.lineTo(toX, toY);
-//        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
-
-        canvas.drawPath(mPath, mPaint);
-    }
-
-    private void drawLineToViewThird(Canvas canvas, View from, View to) {
-
-        if (to.getVisibility() == GONE) {
-            return;
-        }
-
-//        Paint paint = new Paint();
-//        paint.setAntiAlias(true);
-//        paint.setStyle(Paint.Style.STROKE);
-
-        mPaint.setStyle(Paint.Style.STROKE);
-
-        float width = 2f;
-
-        mPaint.setStrokeWidth(dp2px(mContext, width));
         mPaint.setColor(mContext.getResources().getColor(R.color.chelsea_cucumber));
 
         int top = from.getTop();
-        int formY = top + from.getMeasuredHeight();
-        int formX = from.getRight() - from.getMeasuredWidth() / 2;
+        int formY = top + from.getMeasuredHeight() / 2;
+        int formX = from.getRight();
 
         int top1 = to.getTop();
-        int toY = top1;
-        int toX = to.getRight() - to.getMeasuredWidth() / 2;
-
-//        Path path = new Path();
-//        path.moveTo(formX, formY);
-//        path.quadTo(toX - dp2px(mContext, 15), toY, toX, toY);
+        int toY = top1 + to.getMeasuredHeight() / 2;
+        int toX = to.getLeft();
 
         mPath.reset();
         mPath.moveTo(formX, formY);
         //贝塞尔二次曲线
-        mPath.lineTo(toX, toY);
-//        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
+//        mPath.lineTo(toX, toY);
+        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
 
         canvas.drawPath(mPath, mPaint);
+
     }
 
     @Override
@@ -549,6 +470,23 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         return mCurrentFocus;
     }
 
+
+    /**
+     * 插入子节点
+     *
+     * @param nodeValue
+     */
+
+    public void insetSubNode(String nodeValue) {
+        NodeModel<String> addNode = new NodeModel<>(nodeValue);
+        NodeModel<String> parentNode = getCurrentFocusNode();
+        if (parentNode != null) {
+            mTreeModel.insertSubNodeFirst(parentNode, addNode);
+            Log.i(TAG, "addNode: true");
+            addNodeViewToGroup(addNode);
+        }
+    }
+
     /**
      * 添加同层节点
      *
@@ -556,10 +494,9 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
      */
     public void addNode(String nodeValue) {
         NodeModel<String> addNode = new NodeModel<>(nodeValue);
-//        NodeModel<String> parentNode = getCurrentFocusNode().getParentNode();
-        NodeModel<String> parentNode = getCurrentFocusNode();
+        NodeModel<String> parentNode = getCurrentFocusNode().getParentNode();
         if (parentNode != null) {
-            mTreeModel.addSubNodeSecond(parentNode, addNode);
+            mTreeModel.addSubNodeFirst(parentNode, addNode);
             Log.i(TAG, "addNode: true");
             addNodeViewToGroup(addNode);
         }
@@ -571,9 +508,6 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
      * @param nodeValue
      */
     public void addSubNode(String nodeValue) {
-//        NodeModel<String> addNode = new NodeModel<>(nodeValue);
-//        mTreeModel.addNode(getCurrentFocusNode(), addNode);
-//        addNodeViewToGroup(addNode);
         NodeModel<String> addNode = new NodeModel<>(nodeValue);
         mTreeModel.addSubNodeFirst(getCurrentFocusNode(), addNode);
         addNodeViewToGroup(addNode);

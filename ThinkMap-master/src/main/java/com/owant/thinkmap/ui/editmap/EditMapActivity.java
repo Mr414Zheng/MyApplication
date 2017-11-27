@@ -106,10 +106,12 @@ public class EditMapActivity extends BaseActivity implements EditMapContract.Vie
             @Override
             public void onClick(View v) {
 
-                //TODO 添加命令模式指令
-                Toast.makeText(EditMapActivity.this,
-                        "This feature is in development...",
-                        Toast.LENGTH_SHORT).show();
+                mEditMapPresenter.addSubNoteThird();
+
+//                //TODO 添加命令模式指令
+//                Toast.makeText(EditMapActivity.this,
+//                        "This feature is in development...",
+//                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -197,6 +199,35 @@ public class EditMapActivity extends BaseActivity implements EditMapContract.Vie
     @Override
     public void hideLoadingFile() {
 
+    }
+
+    @Override
+    public void showAddSubNoteDialogThird() {
+        if (editMapTreeView.getCurrentFocusNode().getParentNode() == null) {
+            Toast.makeText(this, getString(com.owant.thinkmap.R.string.cannot_add_second_node), Toast.LENGTH_SHORT)
+                    .show();
+        } else if (addNodeDialog == null) {
+            LayoutInflater factory = LayoutInflater.from(this);
+            View inflate = factory.inflate(com.owant.thinkmap.R.layout.dialog_edit_input, null);
+            addNodeDialog = new EditAlertDialog(EditMapActivity.this);
+            addNodeDialog.setView(inflate);
+            addNodeDialog.setDivTitle(getString(com.owant.thinkmap.R.string.add_second_node));
+            addNodeDialog.addEnterCallBack(new EditAlertDialog.EnterCallBack() {
+                @Override
+                public void onEdit(String value) {
+                    if (TextUtils.isEmpty(value)) {
+                        value = getString(com.owant.thinkmap.R.string.second_node);
+                    }
+                    editMapTreeView.insetSubNode(value);
+                    clearDialog(addNodeDialog);
+                    if (addNodeDialog != null && addNodeDialog.isShowing()) addNodeDialog.dismiss();
+                }
+            });
+            addNodeDialog.show();
+        } else {
+            addNodeDialog.clearInput();
+            addNodeDialog.show();
+        }
     }
 
     @Override

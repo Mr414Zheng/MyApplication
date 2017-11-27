@@ -40,14 +40,13 @@ public class TreeModel<T> implements Serializable {
      * @param start
      * @param nodes
      */
-    public void addSubNodeSecond(NodeModel<T> start, NodeModel<T>... nodes) {
-//        TreeView.addNodeToViewChoice = 2;
-        int index = 2;
+
+    public void addSubNodeFirst(NodeModel<T> start, NodeModel<T>... nodes) {
+        int index = 1;
         NodeModel<T> temp = start;
-//        if (temp.getParentNode() != null) {
-////            index = temp.getParentNode().floor;
-//            index = temp.floor + index;
-//        }
+        if (temp.getParentNode() != null) {
+            index = temp.getParentNode().floor;
+        }
 
         LinkedList<NodeModel<T>> childNodes = temp.getChildNodes();
 
@@ -63,26 +62,17 @@ public class TreeModel<T> implements Serializable {
                     continue;
                 }
             }
-            if (!exist) {
-//                LinkedList<NodeModel<T>> oldChildNodes = new LinkedList<>(childNodes);
-//                start.childNodes.clear();
-                start.childNodes.add(t);
-//                t.setChildNodes(oldChildNodes);
-//                for (NodeModel<T> child : oldChildNodes) {
-//                    child.setParentNode(t);
-//                }
-            }
+            if (!exist) start.getChildNodes().add(t);
         }
     }
 
-    public void addSubNodeFirst(NodeModel<T> start, NodeModel<T>... nodes) {
-//        TreeView.addNodeToViewChoice = 1;
+    public void insertSubNodeFirst(NodeModel<T> start, NodeModel<T>... nodes) {
         int index = 1;
         NodeModel<T> temp = start;
-//        if (temp.getParentNode() != null) {
-////            index = temp.getParentNode().floor;
-//            index = temp.floor + index;
-//        }
+        if (temp.getParentNode() != null) {
+//            index = temp.getParentNode().floor;
+            index = temp.floor + index;
+        }
 
         LinkedList<NodeModel<T>> childNodes = temp.getChildNodes();
 

@@ -25,7 +25,7 @@ public class TreeModelTest {
     @Test
     public void addNode() throws Exception {
         NodeModel<String> addNode = new NodeModel<>("add note");
-        mTreeModel.addNode(mTreeModel.getRootNode(), addNode);
+        mTreeModel.addSubNodeFirst(mTreeModel.getRootNode(), addNode);
 
         mTreeModel.addForTreeItem(new ForTreeItem<NodeModel<String>>() {
             @Override

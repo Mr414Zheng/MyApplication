@@ -125,6 +125,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
 
     private EditAlertDialog addSubNodeDialog = null;
     private EditAlertDialog addNodeDialog = null;
+    private EditAlertDialog insertSubNodeDialog = null;
     private EditAlertDialog editNodeDialog = null;
     private EditAlertDialog saveFileDialog = null;
 
@@ -182,17 +183,13 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         btnCodeMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //TODO 添加命令模式指令
-                Toast.makeText(MainActivity.this,
-                        "This feature is in development...",
-                        Toast.LENGTH_SHORT).show();
+                mEditMapPresenter.addSubNoteThird();
             }
         });
 
 
-        int dx = DensityUtils.dp2px(getApplicationContext(), 80);
-        int dy = DensityUtils.dp2px(getApplicationContext(), 80);
+        int dx = DensityUtils.dp2px(getApplicationContext(), 40);
+        int dy = DensityUtils.dp2px(getApplicationContext(), 40);
         int screenHeight = DensityUtils.dp2px(getApplicationContext(), 720);
         editMapTreeView.setTreeLayoutManager(new RightTreeLayoutManager(dx, dy, screenHeight));
 
@@ -325,6 +322,35 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     @Override
     public void hideLoadingFile() {
 
+    }
+
+    @Override
+    public void showAddSubNoteDialogThird() {
+        if (editMapTreeView.getCurrentFocusNode().getParentNode() == null) {
+            Toast.makeText(this, getString(com.owant.thinkmap.R.string.cannot_add_second_node), Toast.LENGTH_SHORT)
+                    .show();
+        } else if (insertSubNodeDialog == null) {
+            LayoutInflater factory = LayoutInflater.from(this);
+            View inflate = factory.inflate(com.owant.thinkmap.R.layout.dialog_edit_input, null);
+            insertSubNodeDialog = new EditAlertDialog(MainActivity.this);
+            insertSubNodeDialog.setView(inflate);
+            insertSubNodeDialog.setDivTitle(getString(com.owant.thinkmap.R.string.add_third_node));
+            insertSubNodeDialog.addEnterCallBack(new EditAlertDialog.EnterCallBack() {
+                @Override
+                public void onEdit(String value) {
+                    if (TextUtils.isEmpty(value)) {
+                        value = getString(com.owant.thinkmap.R.string.tab_code_mode);
+                    }
+                    editMapTreeView.insetSubNode(value);
+                    clearDialog(insertSubNodeDialog);
+                    if (insertSubNodeDialog != null && insertSubNodeDialog.isShowing()) insertSubNodeDialog.dismiss();
+                }
+            });
+            insertSubNodeDialog.show();
+        } else {
+            insertSubNodeDialog.clearInput();
+            insertSubNodeDialog.show();
+        }
     }
 
     @Override

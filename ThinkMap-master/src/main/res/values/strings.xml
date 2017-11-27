@@ -5,10 +5,11 @@
 
     <string name="app_title">Think Map</string>
     <string name="my_plan">My Plan</string>
-    <string name="add_second_node">添加支干线设备.</string>
-    <string name="transformer">变压器</string>
+    <string name="add_second_node">添加同层节点.</string>
+    <string name="transformer">双击空白放大</string>
     <string name="first_node">主干线设备</string>
-    <string name="add_first_node">添加主干线设备.</string>
+    <string name="add_first_node">添加子节点.</string>
+    <string name="add_third_node">插入子节点.</string>
     <string name="second_node">支干线设备</string>
     <string name="edit_node">编辑设备</string>
     <string name="title_add_sub_node">add SubNode</string>
@@ -16,12 +17,12 @@
     <string name="enter">确定</string>
 
     <!--tab menu-->
-    <string name="tab_sub_node">添加主干线设备</string>
-    <string name="tab_node">添加支干线设备</string>
-    <string name="tab_front_view">FrontView</string>
-    <string name="tab_code_mode">CodeMode</string>
+    <string name="tab_sub_node">添加子节点</string>
+    <string name="tab_node">添加同层节点</string>
+    <string name="tab_front_view">居中</string>
+    <string name="tab_code_mode">插入子节点</string>
     <string name="delete">删除</string>
-    <string name="cannot_add_second_node">你不能在变压器处添加支干线设备</string>
+    <string name="cannot_add_second_node">无效操作</string>
     <string name="save_file">Save File</string>
     <string name="no">NO</string>
     <string name="save">Save</string>

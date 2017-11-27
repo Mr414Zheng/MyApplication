@@ -36,6 +36,11 @@ public interface EditMapContract {
         void createDefaultTreeModel();
 
         /**
+         * 添加三级节点
+         */
+        void addSubNoteThird();
+
+        /**
          * 添加二级节点
          */
         void addSubNoteSecond();
@@ -107,6 +112,12 @@ public interface EditMapContract {
          * 隐藏加载数据
          */
         void hideLoadingFile();
+
+        /**
+         * 显示添加三级节点
+         */
+
+        void showAddSubNoteDialogThird();
 
         /**
          * 显示添加二级节点
