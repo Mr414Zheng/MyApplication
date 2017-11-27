@@ -5,21 +5,23 @@
 
     <string name="app_title">Think Map</string>
     <string name="my_plan">My Plan</string>
-    <string name="add_a_same_floor_node">Add a same floor node.</string>
-    <string name="null_node">null_node</string>
-    <string name="add_a_sub_node">Add a sub node.</string>
-    <string name="edit_node">Edit Node</string>
+    <string name="add_second_node">添加支干线设备.</string>
+    <string name="transformer">变压器</string>
+    <string name="first_node">主干线设备</string>
+    <string name="add_first_node">添加主干线设备.</string>
+    <string name="second_node">支干线设备</string>
+    <string name="edit_node">编辑设备</string>
     <string name="title_add_sub_node">add SubNode</string>
-    <string name="input_a_new_node">input a new node</string>
-    <string name="enter">Enter</string>
+    <string name="input_a_new_node">名称编号</string>
+    <string name="enter">确定</string>
 
     <!--tab menu-->
-    <string name="tab_sub_node">SubNode</string>
-    <string name="tab_node">Node</string>
+    <string name="tab_sub_node">添加主干线设备</string>
+    <string name="tab_node">添加支干线设备</string>
     <string name="tab_front_view">FrontView</string>
     <string name="tab_code_mode">CodeMode</string>
-    <string name="delete">Delete</string>
-    <string name="cannot_add_node">You can not add a peer node to a root node!</string>
+    <string name="delete">删除</string>
+    <string name="cannot_add_second_node">你不能在变压器处添加支干线设备</string>
     <string name="save_file">Save File</string>
     <string name="no">NO</string>
     <string name="save">Save</string>
@@ -35,13 +37,13 @@
     <string name="file_name_empty">The file name is empty!</string>
     <string name="owant_file_is_empty">OWANT FILE IS EMPTY !</string>
     <string name="about">About</string>
-    <string name="exit_edit">Quit</string>
+    <string name="exit_edit">退出</string>
     <string name="me_information">Do something interesting.   \n\nzhongowant@gmail.com</string>
     <string name="eg_owant_file">/OwantMaps/android.owant</string>
     <string name="new_map">New Map</string>
     <string name="about_us">About us</string>
 
-    <string name="cancel">Cancel</string>
+    <string name="cancel">取消</string>
     <string name="enter_sure">Yes</string>
     <string name="delete_title">Note:\tRemove the file ？</string>
 

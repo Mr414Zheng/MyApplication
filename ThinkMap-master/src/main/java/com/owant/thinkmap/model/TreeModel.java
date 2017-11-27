@@ -1,5 +1,7 @@
 package com.owant.thinkmap.model;
 
+import com.owant.thinkmap.view.TreeView;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,40 +40,14 @@ public class TreeModel<T> implements Serializable {
      * @param start
      * @param nodes
      */
-    public void addNode(NodeModel<T> start, NodeModel<T>... nodes) {
-        int index = 1;
+    public void addSubNodeSecond(NodeModel<T> start, NodeModel<T>... nodes) {
+//        TreeView.addNodeToViewChoice = 2;
+        int index = 2;
         NodeModel<T> temp = start;
-        if (temp.getParentNode() != null) {
-//            index = temp.getParentNode().floor;
-            index = temp.floor + index;
-        }
-
-        LinkedList<NodeModel<T>> childNodes = temp.getChildNodes();
-
-        for (NodeModel<T> t : nodes) {
-            t.setParentNode(start);
-            t.setFloor(index);
-
-            //校验是否存在
-            boolean exist = false;
-            for (NodeModel<T> hash : childNodes) {
-                if (hash == t) {
-                    exist = true;
-                    continue;
-                }
-            }
-            if (!exist)
-                start.getChildNodes().add(t);
-        }
-    }
-
-    public void addSubNode(NodeModel<T> start, NodeModel<T>...nodes) {
-        int index = 1;
-        NodeModel<T> temp = start;
-        if (temp.getParentNode() != null) {
-//            index = temp.getParentNode().floor;
-            index = temp.floor + index;
-        }
+//        if (temp.getParentNode() != null) {
+////            index = temp.getParentNode().floor;
+//            index = temp.floor + index;
+//        }
 
         LinkedList<NodeModel<T>> childNodes = temp.getChildNodes();
 
@@ -88,13 +64,48 @@ public class TreeModel<T> implements Serializable {
                 }
             }
             if (!exist) {
-                    LinkedList<NodeModel<T>> oldChildNodes = new LinkedList<>(childNodes);
-                    start.childNodes.clear();
-                    start.childNodes.add(t);
-                    t.setChildNodes(oldChildNodes);
-                    for (NodeModel<T> child : oldChildNodes) {
-                        child.setParentNode(t);
-                    }
+//                LinkedList<NodeModel<T>> oldChildNodes = new LinkedList<>(childNodes);
+//                start.childNodes.clear();
+                start.childNodes.add(t);
+//                t.setChildNodes(oldChildNodes);
+//                for (NodeModel<T> child : oldChildNodes) {
+//                    child.setParentNode(t);
+//                }
+            }
+        }
+    }
+
+    public void addSubNodeFirst(NodeModel<T> start, NodeModel<T>... nodes) {
+//        TreeView.addNodeToViewChoice = 1;
+        int index = 1;
+        NodeModel<T> temp = start;
+//        if (temp.getParentNode() != null) {
+////            index = temp.getParentNode().floor;
+//            index = temp.floor + index;
+//        }
+
+        LinkedList<NodeModel<T>> childNodes = temp.getChildNodes();
+
+        for (NodeModel<T> t : nodes) {
+            t.setParentNode(start);
+            t.setFloor(index);
+
+            //校验是否存在
+            boolean exist = false;
+            for (NodeModel<T> hash : childNodes) {
+                if (hash == t) {
+                    exist = true;
+                    continue;
+                }
+            }
+            if (!exist) {
+                LinkedList<NodeModel<T>> oldChildNodes = new LinkedList<>(childNodes);
+                start.childNodes.clear();
+                start.childNodes.add(t);
+                t.setChildNodes(oldChildNodes);
+                for (NodeModel<T> child : oldChildNodes) {
+                    child.setParentNode(t);
+                }
             }
         }
     }

@@ -36,17 +36,17 @@ public interface EditMapContract {
         void createDefaultTreeModel();
 
         /**
-         * 添加节点
+         * 添加二级节点
          */
-        void addNote();
+        void addSubNoteSecond();
 
         /**
-         * 添加子节点
+         * 添加一级节点
          */
-        void addSubNote();
+        void addSubNoteFirst();
 
         /**
-         * 编辑节点
+         * 编辑设备
          */
         void editNote();
 
@@ -109,14 +109,14 @@ public interface EditMapContract {
         void hideLoadingFile();
 
         /**
-         * 显示添加节点
+         * 显示添加二级节点
          */
-        void showAddNoteDialog();
+        void showAddSubNoteDialogSecond();
 
         /**
-         * 显示添加子节点
+         * 显示添加一级节点
          */
-        void showAddSubNoteDialog();
+        void showAddSubNoteDialogFirst();
 
         /**
          * 显示编辑节点

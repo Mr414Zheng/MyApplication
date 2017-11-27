@@ -8,9 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -110,6 +112,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     private final static String TAG = "EditMapActivity";
     private final static String tree_model = "tree_model";
 
+
     private String saveDefaultFilePath;
     private EditMapContract.Presenter mEditMapPresenter;
 
@@ -118,6 +121,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     private Button btnAddNode;
     private Button btnFocusMid;
     private Button btnCodeMode;
+    private Button movableBtn;
 
     private EditAlertDialog addSubNodeDialog = null;
     private EditAlertDialog addNodeDialog = null;
@@ -146,6 +150,8 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         btnAddNode = (Button) findViewById(com.owant.thinkmap.R.id.btn_add_node);
         btnFocusMid = (Button) findViewById(com.owant.thinkmap.R.id.btn_focus_mid);
         btnCodeMode = (Button) findViewById(com.owant.thinkmap.R.id.btn_code_mode);
+        movableBtn = (Button) findViewById(R.id.movableBtn);
+
     }
 
     @Override
@@ -155,14 +161,14 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         btnAddNode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditMapPresenter.addNote();
+                mEditMapPresenter.addSubNoteSecond();
             }
         });
 
         btnAddSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditMapPresenter.addSubNote();
+                mEditMapPresenter.addSubNoteFirst();
             }
         });
 
@@ -185,8 +191,8 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         });
 
 
-        int dx = DensityUtils.dp2px(getApplicationContext(), 20);
-        int dy = DensityUtils.dp2px(getApplicationContext(), 20);
+        int dx = DensityUtils.dp2px(getApplicationContext(), 80);
+        int dy = DensityUtils.dp2px(getApplicationContext(), 80);
         int screenHeight = DensityUtils.dp2px(getApplicationContext(), 720);
         editMapTreeView.setTreeLayoutManager(new RightTreeLayoutManager(dx, dy, screenHeight));
 
@@ -201,6 +207,57 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
             @Override
             public void onItemClick(View item) {
 
+            }
+        });
+
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        final int screenWidth = dm.widthPixels;
+        final int screenHeight1 = dm.heightPixels - 50;
+        movableBtn.setOnTouchListener(new View.OnTouchListener() {
+            int lastX, lastY; //记录移动的最后的位置
+
+            public boolean onTouch(View v, MotionEvent event) {
+                //获取Action
+                int ea = event.getAction();
+                Log.i("TAG", "Touch:" + ea);
+                switch (ea) {
+                    case MotionEvent.ACTION_DOWN:   //按下
+                        lastX = (int) event.getRawX();
+                        lastY = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:  //移动
+                        //移动中动态设置位置
+                        int dx = (int) event.getRawX() - lastX;
+                        int dy = (int) event.getRawY() - lastY;
+                        int left = v.getLeft() + dx;
+                        int top = v.getTop() + dy;
+                        int right = v.getRight() + dx;
+                        int bottom = v.getBottom() + dy;
+                        if (left < 0) {
+                            left = 0;
+                            right = left + v.getWidth();
+                        }
+                        if (right > screenWidth) {
+                            right = screenWidth;
+                            left = right - v.getWidth();
+                        }
+                        if (top < 0) {
+                            top = 0;
+                            bottom = top + v.getHeight();
+                        }
+                        if (bottom > screenHeight1) {
+                            bottom = screenHeight1;
+                            top = bottom - v.getHeight();
+                        }
+                        v.layout(left, top, right, bottom);
+                        //将当前的位置再次设置
+                        lastX = (int) event.getRawX();
+                        lastY = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:   //脱离
+                        break;
+                }
+                return false;
             }
         });
 
@@ -271,20 +328,20 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     }
 
     @Override
-    public void showAddNoteDialog() {
+    public void showAddSubNoteDialogSecond() {
         if (editMapTreeView.getCurrentFocusNode().getParentNode() == null) {
-            Toast.makeText(this, getString(com.owant.thinkmap.R.string.cannot_add_node), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(com.owant.thinkmap.R.string.cannot_add_second_node), Toast.LENGTH_SHORT).show();
         } else if (addNodeDialog == null) {
             LayoutInflater factory = LayoutInflater.from(this);
             View inflate = factory.inflate(com.owant.thinkmap.R.layout.dialog_edit_input, null);
             addNodeDialog = new EditAlertDialog(MainActivity.this);
             addNodeDialog.setView(inflate);
-            addNodeDialog.setDivTitle(getString(com.owant.thinkmap.R.string.add_a_same_floor_node));
+            addNodeDialog.setDivTitle(getString(com.owant.thinkmap.R.string.add_second_node));
             addNodeDialog.addEnterCallBack(new EditAlertDialog.EnterCallBack() {
                 @Override
                 public void onEdit(String value) {
                     if (TextUtils.isEmpty(value)) {
-                        value = getString(com.owant.thinkmap.R.string.null_node);
+                        value = getString(com.owant.thinkmap.R.string.second_node);
                     }
                     editMapTreeView.addNode(value);
                     clearDialog(addNodeDialog);
@@ -300,18 +357,18 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     }
 
     @Override
-    public void showAddSubNoteDialog() {
+    public void showAddSubNoteDialogFirst() {
         if (addSubNodeDialog == null) {
             LayoutInflater factory = LayoutInflater.from(this);
             View inflate = factory.inflate(com.owant.thinkmap.R.layout.dialog_edit_input, null);
             addSubNodeDialog = new EditAlertDialog(this);
             addSubNodeDialog.setView(inflate);
-            addSubNodeDialog.setDivTitle(getString(com.owant.thinkmap.R.string.add_a_sub_node));
+            addSubNodeDialog.setDivTitle(getString(com.owant.thinkmap.R.string.add_first_node));
             addSubNodeDialog.addEnterCallBack(new EditAlertDialog.EnterCallBack() {
                 @Override
                 public void onEdit(String value) {
                     if (TextUtils.isEmpty(value)) {
-                        value = getString(com.owant.thinkmap.R.string.null_node);
+                        value = getString(com.owant.thinkmap.R.string.first_node);
                     }
                     editMapTreeView.addSubNode(value);
                     clearDialog(addSubNodeDialog);
@@ -354,7 +411,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
             @Override
             public void onEdit(String value) {
                 if (TextUtils.isEmpty(value)) {
-                    value = getString(com.owant.thinkmap.R.string.null_node);
+                    value = getString(com.owant.thinkmap.R.string.transformer);
                 }
                 editMapTreeView.changeNodeValue(getCurrentFocusNode(), value);
                 clearDialog(editNodeDialog);
@@ -415,7 +472,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
 
     @Override
     public String getDefaultPlanStr() {
-        return getString(com.owant.thinkmap.R.string.defualt_my_plan);
+        return getString(com.owant.thinkmap.R.string.transformer);
     }
 
     @Override
@@ -455,6 +512,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
     @Override
     protected void onDestroy() {

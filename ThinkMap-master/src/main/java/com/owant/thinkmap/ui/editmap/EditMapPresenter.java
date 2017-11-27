@@ -163,13 +163,13 @@ public class EditMapPresenter implements EditMapContract.Presenter {
     }
 
     @Override
-    public void addNote() {
-        mView.showAddNoteDialog();
+    public void addSubNoteSecond() {
+        mView.showAddSubNoteDialogSecond();
     }
 
     @Override
-    public void addSubNote() {
-        mView.showAddSubNoteDialog();
+    public void addSubNoteFirst() {
+        mView.showAddSubNoteDialogFirst();
     }
 
     @Override

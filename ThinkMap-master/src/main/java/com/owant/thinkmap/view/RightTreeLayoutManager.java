@@ -279,6 +279,25 @@ public class RightTreeLayoutManager implements TreeLayoutManager {
         }
     }
 
+//    private void moveNodeLayout_2(TreeView superTreeView, NodeView rootView) {
+//
+//        Deque<NodeModel<String>> queue = new ArrayDeque<>();
+//        NodeModel<String> rootNode = rootView.getTreeNode();
+//        = superTreeView.findNodeViewFromNodeModel(rootNode.getParentNode());
+//        queue.add(rootNode);
+//        while (!queue.isEmpty()) {
+//            rootNode = queue.poll();
+//            rootView = (NodeView) superTreeView.findNodeViewFromNodeModel(rootNode);
+//            int l = rootView.getLeft();
+//            int t = rootView.getTop();
+//            rootView.layout(l, t, l + rootView.getMeasuredWidth(), t + rootView.getMeasuredHeight());
+//
+//            LinkedList<NodeModel<String>> childNodes = rootNode.getChildNodes();
+//            for (NodeModel<String> item : childNodes) {
+//                queue.add(item);
+//            }
+//        }
+//    }
 
     /**
      * root节点的定位

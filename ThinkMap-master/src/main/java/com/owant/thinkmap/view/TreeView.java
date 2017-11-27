@@ -2,6 +2,7 @@ package com.owant.thinkmap.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -39,7 +40,7 @@ import static com.owant.thinkmap.util.DensityUtils.dp2px;
 public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleGestureListener {
 
     private static final String TAG = "TreeView";
-    public static int addNodeToViewChoice = 0;
+    //    public static int addNodeToViewChoice = 0;
     private Context mContext;
 
     public TreeModel<String> mTreeModel;
@@ -231,9 +232,9 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
             for (NodeModel<String> node : childNodes) {
 
                 //连线
-                if (addNodeToViewChoice == 1) {
+                if (node.floor == 1) {
                     drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
-                } else if (addNodeToViewChoice == 2) {
+                } else if (node.floor == 2) {
                     drawLineToViewSecond(canvas, fatherView, findNodeViewFromNodeModel(node));
                 } else {
                     drawLineToViewThird(canvas, fatherView, findNodeViewFromNodeModel(node));
@@ -257,16 +258,12 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
             return;
         }
 
-//        Paint paint = new Paint();
-//        paint.setAntiAlias(true);
-//        paint.setStyle(Paint.Style.STROKE);
-
         mPaint.setStyle(Paint.Style.STROKE);
 
-        float width = 8f;
+        float width = 2f;
 
         mPaint.setStrokeWidth(dp2px(mContext, width));
-        mPaint.setColor(mContext.getResources().getColor(R.color.chelsea_cucumber));
+        mPaint.setColor(mContext.getResources().getColor(R.color.lineColor_first));
 
         int top = from.getTop();
         int formY = top + from.getMeasuredHeight() / 2;
@@ -275,10 +272,6 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         int top1 = to.getTop();
         int toY = top1 + to.getMeasuredHeight() / 2;
         int toX = to.getLeft();
-
-//        Path path = new Path();
-//        path.moveTo(formX, formY);
-//        path.quadTo(toX - dp2px(mContext, 15), toY, toX, toY);
 
         mPath.reset();
         mPath.moveTo(formX, formY);
@@ -296,28 +289,27 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
             return;
         }
 
-//        Paint paint = new Paint();
-//        paint.setAntiAlias(true);
-//        paint.setStyle(Paint.Style.STROKE);
-
         mPaint.setStyle(Paint.Style.STROKE);
 
-        float width = 4f;
+        float width = 2f;
 
         mPaint.setStrokeWidth(dp2px(mContext, width));
-        mPaint.setColor(mContext.getResources().getColor(R.color.chelsea_cucumber));
+        mPaint.setColor(mContext.getResources().getColor(R.color.lineColor_second));
 
+//        int top = from.getTop();
+//        int formY = top + from.getMeasuredHeight() / 2;
+//        int formX = from.getRight() + from.getMeasuredWidth();
+
+//        int top1 = to.getTop();
+//        int toY = top1;
+//        int toX = to.getRight() - to.getMeasuredWidth() / 2;
         int top = from.getTop();
         int formY = top + from.getMeasuredHeight() / 2;
-        int formX = from.getRight() + from.getMeasuredWidth();
+        int formX = from.getRight();
 
         int top1 = to.getTop();
-        int toY = top1;
-        int toX = to.getRight() - to.getMeasuredWidth() / 2;
-
-//        Path path = new Path();
-//        path.moveTo(formX, formY);
-//        path.quadTo(toX - dp2px(mContext, 15), toY, toX, toY);
+        int toY = top1 + to.getMeasuredHeight() / 2;
+        int toX = to.getLeft();
 
         mPath.reset();
         mPath.moveTo(formX, formY);
@@ -564,7 +556,8 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
      */
     public void addNode(String nodeValue) {
         NodeModel<String> addNode = new NodeModel<>(nodeValue);
-        NodeModel<String> parentNode = getCurrentFocusNode().getParentNode();
+//        NodeModel<String> parentNode = getCurrentFocusNode().getParentNode();
+        NodeModel<String> parentNode = getCurrentFocusNode();
         if (parentNode != null) {
             mTreeModel.addSubNodeSecond(parentNode, addNode);
             Log.i(TAG, "addNode: true");
