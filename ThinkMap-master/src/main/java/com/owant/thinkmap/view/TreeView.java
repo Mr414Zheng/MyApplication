@@ -370,7 +370,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         nodeView.setClickable(true);
         nodeView.setSelected(false);
         nodeView.setTreeNode(poll);
-//        nodeView.setBackgroundResource();
+//        nodeView.setBackgroundResource(R.drawable.node_view_br);
 
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         nodeView.setLayoutParams(lp);
