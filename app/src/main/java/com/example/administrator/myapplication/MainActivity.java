@@ -33,6 +33,7 @@ import com.owant.thinkmap.view.TreeViewItemClick;
 import com.owant.thinkmap.view.TreeViewItemLongClick;
 
 
+import java.io.File;
 import java.io.Serializable;
 
 
@@ -311,18 +312,15 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         mEditMapPresenter.start();
 
 //        Intent intent = getIntent();
-
         Intent intent = new Intent();
         intent.setData(Uri.parse(Environment.getExternalStorageDirectory().getPath() +
                 AppConstants.owant_maps + "保存成功.owant"));
         Uri data = intent.getData();
-
-//        Uri.Builder data = Uri.parse(Environment.getExternalStorageDirectory().getPath() +
-//                AppConstants.owant_maps + "保存成功").buildUpon();
-//        String data = builder.toString();
+        File file = new File(data.toString());
 //        if (data != null) {
-        if (data.getPath().equals(Environment.getExternalStorageDirectory().getPath() +
-                AppConstants.owant_maps + "保存成功.owant")) {
+//        if (data.getPath().equals(Environment.getExternalStorageDirectory().getPath() +
+//                AppConstants.owant_maps + "保存成功.owant"))
+        if (file.exists()) {
             final String path = data.getPath();
             //加载owant的文件路径
             presenterSetLoadMapPath(path);
