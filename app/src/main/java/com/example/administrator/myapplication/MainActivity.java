@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -15,42 +14,26 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.owant.thinkmap.AppConstants;
 import com.owant.thinkmap.base.BaseActivity;
-import com.owant.thinkmap.file.Conf;
-import com.owant.thinkmap.file.OwantFileCreate;
 import com.owant.thinkmap.model.NodeModel;
 import com.owant.thinkmap.model.TreeModel;
 import com.owant.thinkmap.ui.EditAlertDialog;
-import com.owant.thinkmap.ui.SplashActivity;
-import com.owant.thinkmap.ui.editmap.EditMapActivity;
 import com.owant.thinkmap.ui.editmap.EditMapContract;
 import com.owant.thinkmap.ui.editmap.EditMapPresenter;
 import com.owant.thinkmap.util.AndroidUtil;
 import com.owant.thinkmap.util.DensityUtils;
 import com.owant.thinkmap.util.LOG;
-import com.owant.thinkmap.view.NodeView;
 import com.owant.thinkmap.view.RightTreeLayoutManager;
 import com.owant.thinkmap.view.TreeView;
 import com.owant.thinkmap.view.TreeViewItemClick;
 import com.owant.thinkmap.view.TreeViewItemLongClick;
-//import com.squareup.haha.perflib.Main;
 
-import org.litepal.LitePal;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Queue;
 
 
 //public class MainActivity extends AppCompatActivity {
