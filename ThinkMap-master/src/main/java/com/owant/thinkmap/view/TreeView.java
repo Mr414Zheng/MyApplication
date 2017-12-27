@@ -264,15 +264,23 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         int top = from.getTop();
         int formY = top + from.getMeasuredHeight() / 2;
         int formX = from.getRight();
-
-        int top1 = to.getTop();
-        int toY = top1 + to.getMeasuredHeight() / 2;
-        int toX = to.getLeft();
-
+        //三条线之一
+        int toY1 = top + to.getMeasuredHeight() / 2;
+        int toX1 = ((to.getLeft() - formX) / 2) + formX;
+        //三条线之二
+        int top2 = to.getTop();
+        int toY2 = top2 + to.getMeasuredHeight() / 2;
+        int toX2 = toX1;
+        //三条线之三
+        int toY3 = toY2;
+        int toX3 = toX2 + ((to.getLeft() - formX) / 2);
         mPath.reset();
+
         mPath.moveTo(formX, formY);
+        mPath.lineTo(toX1, toY1);
+        mPath.lineTo(toX2, toY2);
+        mPath.lineTo(toX3, toY3);
         //贝塞尔二次曲线
-        mPath.lineTo(toX, toY);
 //        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
 
         canvas.drawPath(mPath, mPaint);

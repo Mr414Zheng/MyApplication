@@ -23,6 +23,8 @@ public class MoveAndScaleHandler implements ScaleGestureDetector.OnScaleGestureL
 
     private int lastX = 0;
     private int lastY = 0;
+    private float oldSpacing;
+    private float newSpacing;
 
     private int mode = 0;
 
@@ -52,14 +54,17 @@ public class MoveAndScaleHandler implements ScaleGestureDetector.OnScaleGestureL
                 mode = -2;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
+                oldSpacing = spacing(event);
                 mode += 1;
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 if (mode >= 2) {
                     //缩放
-                    //mScaleGestureDetector.onTouchEvent(event);
-
+                    newSpacing = spacing(event);
+                    if (newSpacing > oldSpacing + 10 || newSpacing < oldSpacing - 10) {
+                        mScaleGestureDetector.onTouchEvent(event);
+                    }
                 } else if (mode == 1) {
                     int deltaX = currentX - lastX;
                     int deltaY = currentY - lastY;
