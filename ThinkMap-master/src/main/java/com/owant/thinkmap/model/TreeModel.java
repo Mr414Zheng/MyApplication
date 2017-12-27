@@ -79,6 +79,7 @@ public class TreeModel<T> implements Serializable {
         for (NodeModel<T> t : nodes) {
             t.setParentNode(start);
             t.setFloor(index);
+            //插入的是主干线设备
 
             //校验是否存在
             boolean exist = false;

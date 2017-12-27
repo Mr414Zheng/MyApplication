@@ -56,6 +56,15 @@
             android:drawableTop="@mipmap/iv_code_mode"
             android:text="@string/tab_code_mode"/>
 
+        <!--<Button-->
+        <!--android:id="@+id/btn_add_main"-->
+        <!--style="@style/TabTheme"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:drawableTop="@mipmap/iv_code_mode"-->
+        <!--android:text="@string/tab_add_main"/>-->
+
         <!--control+shift+right/left进行Text和Design的切换-->
 
     </LinearLayout>

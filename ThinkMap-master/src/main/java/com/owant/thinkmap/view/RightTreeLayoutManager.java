@@ -7,7 +7,6 @@ import com.owant.thinkmap.model.ForTreeItem;
 import com.owant.thinkmap.model.NodeModel;
 import com.owant.thinkmap.model.TreeModel;
 
-import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -141,10 +140,10 @@ public class RightTreeLayoutManager implements TreeLayoutManager {
                 moveNodeLayout(treeView, view, bnDr);
             }
 
-            for (NodeModel<String> pre : allPreNodes) {
-                NodeView view = (NodeView) treeView.findNodeViewFromNodeModel(pre);
-                moveNodeLayout(treeView, view, -topDr);
-            }
+//            for (NodeModel<String> pre : allPreNodes) {
+//                NodeView view = (NodeView) treeView.findNodeViewFromNodeModel(pre);
+//                moveNodeLayout(treeView, view, -topDr);
+//            }
         }
     }
 
@@ -160,8 +159,6 @@ public class RightTreeLayoutManager implements TreeLayoutManager {
             //所有的子节点
             LinkedList<NodeModel<String>> childNodes = treeNode.getChildNodes();
             int size = childNodes.size();
-            int mid = size / 2;
-            int r = size % 2;
 
             //基线
             //        b
@@ -169,86 +166,38 @@ public class RightTreeLayoutManager implements TreeLayoutManager {
             //        c
             //
             int left = rootView.getRight() + mDx;
-            int top = rootView.getTop() + rootView.getMeasuredHeight() / 2;
-
-            int right = 0;
-            int bottom = 0;
+            int top = rootView.getTop();
+            int right;
+            int bottom;
 
             if (size == 0) {
                 return;
             } else if (size == 1) {
                 NodeView midChildNodeView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(0));
 
-                top = top - midChildNodeView.getMeasuredHeight() / 2;
                 right = left + midChildNodeView.getMeasuredWidth();
                 bottom = top + midChildNodeView.getMeasuredHeight();
                 midChildNodeView.layout(left, top, right, bottom);
             } else {
 
-                int topLeft = left;
-                int topTop = top;
-                int topRight = 0;
-                int topBottom = 0;
+                int bottomTop;
+                int bottomRight;
+                int bottomBottom;
 
-                int bottomLeft = left;
-                int bottomTop = top;
-                int bottomRight = 0;
-                int bottomBottom = 0;
+                NodeView midView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(0));
+                midView.layout(left, top, left + midView.getMeasuredWidth(), top + midView.getMeasuredHeight());
 
-                if (r == 0) {//偶数
-                    for (int i = mid - 1; i >= 0; i--) {
-                        NodeView topView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(i));
-                        NodeView bottomView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(size - i - 1));
+                bottomTop = midView.getBottom();
 
+                for (int i = 1; i <= size - 1; i++) {
+                    NodeView bottomView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(i));
 
-                        if (i == mid - 1) {
-                            topTop = topTop - mDy / 2 - topView.getMeasuredHeight();
-                            topRight = topLeft + topView.getMeasuredWidth();
-                            topBottom = topTop + topView.getMeasuredHeight();
+                    bottomTop = bottomTop + mDy;
+                    bottomRight = left + bottomView.getMeasuredWidth();
+                    bottomBottom = bottomTop + bottomView.getMeasuredHeight();
 
-                            bottomTop = bottomTop + mDy / 2;
-                            bottomRight = bottomLeft + bottomView.getMeasuredWidth();
-                            bottomBottom = bottomTop + bottomView.getMeasuredHeight();
-                        } else {
-                            topTop = topTop - mDy - topView.getMeasuredHeight();
-                            topRight = topLeft + topView.getMeasuredWidth();
-                            topBottom = topTop + topView.getMeasuredHeight();
-
-                            bottomTop = bottomTop + mDy;
-                            bottomRight = bottomLeft + bottomView.getMeasuredWidth();
-                            bottomBottom = bottomTop + bottomView.getMeasuredHeight();
-                        }
-
-                        topView.layout(topLeft, topTop, topRight, topBottom);
-                        bottomView.layout(bottomLeft, bottomTop, bottomRight, bottomBottom);
-
-                        bottomTop = bottomView.getBottom();
-                    }
-
-                } else {
-                    NodeView midView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(mid));
-                    midView.layout(left, top - midView.getMeasuredHeight() / 2, left + midView.getMeasuredWidth(),
-                            top - midView.getMeasuredHeight() / 2 + midView.getMeasuredHeight());
-
-                    topTop = midView.getTop();
-                    bottomTop = midView.getBottom();
-
-                    for (int i = mid - 1; i >= 0; i--) {
-                        NodeView topView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(i));
-                        NodeView bottomView = (NodeView) treeView.findNodeViewFromNodeModel(childNodes.get(size - i - 1));
-
-                        topTop = topTop - mDy - topView.getMeasuredHeight();
-                        topRight = topLeft + topView.getMeasuredWidth();
-                        topBottom = topTop + topView.getMeasuredHeight();
-
-                        bottomTop = bottomTop + mDy;
-                        bottomRight = bottomLeft + bottomView.getMeasuredWidth();
-                        bottomBottom = bottomTop + bottomView.getMeasuredHeight();
-
-                        topView.layout(topLeft, topTop, topRight, topBottom);
-                        bottomView.layout(bottomLeft, bottomTop, bottomRight, bottomBottom);
-                        bottomTop = bottomView.getBottom();
-                    }
+                    bottomView.layout(left, bottomTop, bottomRight, bottomBottom);
+                    bottomTop = bottomView.getBottom();
                 }
             }
         }

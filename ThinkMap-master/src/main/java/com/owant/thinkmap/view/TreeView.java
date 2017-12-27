@@ -229,11 +229,12 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         if (fatherView != null) {
             LinkedList<NodeModel<String>> childNodes = root.getChildNodes();
             for (NodeModel<String> node : childNodes) {
-
-                //连线
-
-                drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
-
+                if (!node.isMain()) {
+                    //连线
+                    drawLineToViewFirst(canvas, fatherView, findNodeViewFromNodeModel(node));
+                } else {
+                    drawLineToViewSecond(canvas, fatherView, findNodeViewFromNodeModel(node));
+                }
                 //递归
                 drawTreeLine(canvas, node);
             }
@@ -241,7 +242,7 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
     }
 
     /**
-     * 绘制两个View直接的连线
+     * 绘制两个View之间的连线
      *
      * @param canvas
      * @param from
@@ -271,8 +272,39 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         mPath.reset();
         mPath.moveTo(formX, formY);
         //贝塞尔二次曲线
-//        mPath.lineTo(toX, toY);
-        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
+        mPath.lineTo(toX, toY);
+//        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
+
+        canvas.drawPath(mPath, mPaint);
+
+    }
+
+    private void drawLineToViewSecond(Canvas canvas, View from, View to) {
+
+        if (to.getVisibility() == GONE) {
+            return;
+        }
+
+        mPaint.setStyle(Paint.Style.STROKE);
+
+        float width = 2f;
+
+        mPaint.setStrokeWidth(dp2px(mContext, width));
+        mPaint.setColor(mContext.getResources().getColor(R.color.chalet_red));
+
+        int top = from.getTop();
+        int formY = top + from.getMeasuredHeight() / 2;
+        int formX = from.getRight();
+
+        int top1 = to.getTop();
+        int toY = top1 + to.getMeasuredHeight() / 2;
+        int toX = to.getLeft();
+
+        mPath.reset();
+        mPath.moveTo(formX, formY);
+        //贝塞尔二次曲线
+        mPath.lineTo(toX, toY);
+//        mPath.quadTo(toX - dp2px(mContext, 18), toY, toX, toY);
 
         canvas.drawPath(mPath, mPaint);
 
@@ -391,6 +423,34 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
         return nodeView;
     }
 
+    /**
+     * 漏电报警
+     *
+     * @param treeView 此为可以拖动的线路图
+     * @param value    此为传入的设备编号
+     */
+
+    public void nodeViewWarning(TreeView treeView, String value) {
+        NodeModel<String> rootNode = treeView.getTreeModel().getRootNode();
+        Deque<NodeModel<String>> deque = new ArrayDeque<>();
+        deque.offer(rootNode);
+        while (!deque.isEmpty()) {
+            NodeModel<String> poll = deque.poll();
+            if (poll.getValue().equals(value)) {
+                while (poll != null) {
+                    treeView.findNodeViewFromNodeModel(poll).setBackgroundResource(R.drawable.node_view_br);
+                    poll = poll.getParentNode();
+                }
+                return;
+            } else {
+                LinkedList<NodeModel<String>> childNodes = poll.getChildNodes();
+                for (NodeModel<String> childNode : childNodes) {
+                    deque.offer(childNode);
+                }
+            }
+        }
+    }
+
     public void setTreeViewItemClick(TreeViewItemClick treeViewItemClick) {
         mTreeViewItemClick = treeViewItemClick;
     }
@@ -473,12 +533,28 @@ public class TreeView extends ViewGroup implements ScaleGestureDetector.OnScaleG
 
     /**
      * 插入子节点
-     *
      * @param nodeValue
      */
 
-    public void insetSubNode(String nodeValue) {
+    public void insertSubNode(String nodeValue) {
         NodeModel<String> addNode = new NodeModel<>(nodeValue);
+        NodeModel<String> parentNode = getCurrentFocusNode();
+        if (parentNode != null) {
+            mTreeModel.insertSubNodeFirst(parentNode, addNode);
+            Log.i(TAG, "addNode: true");
+            addNodeViewToGroup(addNode);
+        }
+    }
+
+    /**
+     * 插入主干线
+     *
+     * @param nodeValue
+     */
+    public void insertMainNode(String nodeValue) {
+        NodeModel<String> addNode = new NodeModel<>(nodeValue);
+        //设置主干线标志位
+        addNode.setMain(true);
         NodeModel<String> parentNode = getCurrentFocusNode();
         if (parentNode != null) {
             mTreeModel.insertSubNodeFirst(parentNode, addNode);

@@ -35,6 +35,10 @@ public class NodeModel<T> implements Serializable {
     public int floor;
 
     public boolean hidden = false;
+    /**
+     * 是否是主干线
+     */
+    public boolean main = false;
 
     public NodeModel(T value) {
         this.value = value;
@@ -90,6 +94,14 @@ public class NodeModel<T> implements Serializable {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public boolean isMain() {
+        return main;
+    }
+
+    public void setMain(boolean main) {
+        this.main = main;
     }
 
 }

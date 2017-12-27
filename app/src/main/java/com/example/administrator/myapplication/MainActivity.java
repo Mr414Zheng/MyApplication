@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,93 +37,69 @@ import com.owant.thinkmap.view.TreeViewItemLongClick;
 
 import java.io.File;
 import java.io.Serializable;
-
-
-//public class MainActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-////        setContentView(R.layout.activity_main);
-//
-//
-//        final NodeModel<String> nodeA = new NodeModel<>("剑灵");
-//        final NodeModel<String> nodeB = new NodeModel<>("穿越火线");
-//        final NodeModel<String> nodeC = new NodeModel<>("QQ飞车");
-//        final NodeModel<String> nodeD = new NodeModel<>("QQ炫舞");
-//        final NodeModel<String> nodeE = new NodeModel<>("QQ三国");
-//        final NodeModel<String> nodeF = new NodeModel<>("地下城与勇士");
-//        final NodeModel<String> nodeG = new NodeModel<>("英雄联盟");
-//        final NodeModel<String> nodeH = new NodeModel<>("剑灵PC版");
-//        final NodeModel<String> nodeI = new NodeModel<>("剑灵手游版");
-//        final NodeModel<String> nodeJ = new NodeModel<>("冒险岛");
-//        final NodeModel<String> nodeK = new NodeModel<>("龙之谷");
-//        final NodeModel<String> nodeL = new NodeModel<>("传奇世界");
-//        final NodeModel<String> nodeM = new NodeModel<>("热血传奇");
-//        final NodeModel<String> nodeN = new NodeModel<>("永恒之塔");
-//        final NodeModel<String> nodeO = new NodeModel<>("彩虹岛");
-//        final NodeModel<String> nodeP = new NodeModel<>("我的世界");
-//        final NodeModel<String> nodeQ = new NodeModel<>("守望先锋");
-//        final NodeModel<String> nodeR = new NodeModel<>("炉石传说");
-//        final NodeModel<String> nodeS = new NodeModel<>("天谕");
-//        final NodeModel<String> nodeT = new NodeModel<>("风暴英雄");
-//        final NodeModel<String> nodeU = new NodeModel<>("无尽战区");
-//        final NodeModel<String> nodeV = new NodeModel<>("龙魂时刻");
-//        final NodeModel<String> nodeW = new NodeModel<>("梦幻西游PC版");
-//        final NodeModel<String> nodeX = new NodeModel<>("梦幻西游手游版");
-//        final NodeModel<String> nodeY = new NodeModel<>("魔兽世界");
-//        final NodeModel<String> nodeZ = new NodeModel<>("梦幻西游");
-//        final NodeModel<String> node1 = new NodeModel<>("游戏运营商");
-//        final NodeModel<String> node2 = new NodeModel<>("腾讯");
-//        final NodeModel<String> node3 = new NodeModel<>("盛大");
-//        final NodeModel<String> node4 = new NodeModel<>("网易");
-//
-//
-//        final TreeModel<String> tree = new TreeModel<>(node1);
-//        tree.addNode(node1, node2, node3, node4);
-//        tree.addNode(node2, nodeA, nodeB, nodeC, nodeD, nodeE, nodeF, nodeG);
-//        tree.addNode(node3, nodeJ, nodeK, nodeL, nodeM, nodeN, nodeO);
-//        tree.addNode(node4, nodeP, nodeQ, nodeR, nodeS, nodeT, nodeU, nodeV, nodeY, nodeZ);
-//        tree.addNode(nodeA, nodeH, nodeI);
-//        tree.addNode(nodeZ, nodeW, nodeX);
-//
-//        int dx = DensityUtils.dp2px(this, 60);
-//        int dy = DensityUtils.dp2px(this, 30);
-//        int mHeight = DensityUtils.dp2px(this, 720);
-//
-//        TreeView testTreeView = new TreeView(this);
-//        testTreeView.setTreeLayoutManager(new RightTreeLayoutManager(dx, dy, mHeight));
-//        testTreeView.setTreeModel(tree);
-//
-//        setContentView(testTreeView);
-//
-//    }
-//}
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends BaseActivity implements EditMapContract.View {
 
     private final static String TAG = "EditMapActivity";
     private final static String tree_model = "tree_model";
-
-
+    private final static int SHOW_MESSAGE = 1;
+    private static ArrayList tempList = new ArrayList();
+    private HashSet hashSet = new HashSet(30);
+    private ArrayList list = new ArrayList();
     private String saveDefaultFilePath;
-    private EditMapContract.Presenter mEditMapPresenter;
+    private String DeviceID;
+//    private ConnectSocket connectSocket = new ConnectSocket();
 
+    private int i;
+    private Timer mTimer;
+    private TimerTask mTimerTask;
+
+    private EditMapContract.Presenter mEditMapPresenter;
     private TreeView editMapTreeView;
     private Button btnAddSub;
     private Button btnAddNode;
     private Button btnFocusMid;
-    private Button btnCodeMode;
+    private Button btnInsertSub;
+    //    private Button btnInsertMain;
     private Button movableBtn;
-    private Button saveData;
+    //    private Button saveData;
     private TextView textMsg;
 
     private EditAlertDialog addSubNodeDialog = null;
     private EditAlertDialog addNodeDialog = null;
     private EditAlertDialog insertSubNodeDialog = null;
+    private EditAlertDialog insertMainNodeDialog = null;
     private EditAlertDialog editNodeDialog = null;
     private EditAlertDialog saveFileDialog = null;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SHOW_MESSAGE:
+//                    if (i >= 3){
+//                        mTimerTask.cancel();
+//                    }
+//                    String DeviceID = connectSocket.getDeviceID();
+//                    Log.e("设备编号：", "————————————" + DeviceID);
+//                    String ldz = connectSocket.getLdz();
+//                    Log.e(" 漏电值: ", "——————————————" + ldz);
+//                    String fdz = connectSocket.getFdz();
+//                    Log.e(" 漏电阈值: ", "——————————" + fdz);
+//                    textMsg.setText("设备编号: " + DeviceID + " 漏电值: " + ldz + " 漏电阈值: " + fdz);
+//                    Log.e("i = ", ""+i);
+                    break;
+                default:
+            }
+        }
+    };
 
     @Override
     protected void onBaseIntent() {
@@ -140,32 +118,62 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
 
     public void bindViews() {
 
-        editMapTreeView = (TreeView) findViewById(com.owant.thinkmap.R.id.edit_map_tree_view);
-        btnAddSub = (Button) findViewById(com.owant.thinkmap.R.id.btn_add_sub);
-        btnAddNode = (Button) findViewById(com.owant.thinkmap.R.id.btn_add_node);
-        btnFocusMid = (Button) findViewById(com.owant.thinkmap.R.id.btn_focus_mid);
-        btnCodeMode = (Button) findViewById(com.owant.thinkmap.R.id.btn_code_mode);
+        editMapTreeView = (TreeView) findViewById(R.id.edit_map_tree_view);
+        btnAddSub = (Button) findViewById(R.id.btn_add_sub);
+        btnAddNode = (Button) findViewById(R.id.btn_add_node);
+        btnFocusMid = (Button) findViewById(R.id.btn_focus_mid);
+        btnInsertSub = (Button) findViewById(R.id.btn_code_mode);
+//        btnInsertMain = (Button) findViewById(R.id.btn_add_main);
+        //解除警报按钮
         movableBtn = (Button) findViewById(R.id.movableBtn);
 //        saveData = (Button) findViewById(R.id.saveData);
         textMsg = (TextView) findViewById(R.id.textMsg);
 
     }
 
+    /**
+     * @param deviceNumber 此为传入的设备编号，用于告知哪个设备报警
+     */
+    public void warning(String deviceNumber) {
+        editMapTreeView.nodeViewWarning(editMapTreeView, deviceNumber);
+    }
+
+//    public void startTimer() {
+//        if (mTimer != null) {
+//            if (mTimerTask != null) {
+//                mTimerTask.cancel();
+//            }
+//        }
+//        mTimer = new Timer();
+//        mTimerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                Message message = new Message();
+//                message.what = SHOW_MESSAGE;
+//                handler.sendMessage(message);
+//                i++;
+//            }
+//        };
+//        mTimer.schedule(mTimerTask, 1000, 1000);
+//    }
+
     @Override
     protected void onBaseBindView() {
         bindViews();
 
+//        connectSocket.Connect_socket();
+
         btnAddNode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditMapPresenter.addSubNoteSecond();
+                mEditMapPresenter.addNote();
             }
         });
 
         btnAddSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditMapPresenter.addSubNoteFirst();
+                mEditMapPresenter.addSubNote();
             }
         });
 
@@ -176,18 +184,34 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
             }
         });
 
-        btnCodeMode.setOnClickListener(new View.OnClickListener() {
+        btnInsertSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditMapPresenter.addSubNoteThird();
+                mEditMapPresenter.insertSubNote();
             }
         });
 
+//        btnInsertMain.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mEditMapPresenter.insertMainNote();
+//            }
+//        });
 
         int dx = DensityUtils.dp2px(getApplicationContext(), 40);
         int dy = DensityUtils.dp2px(getApplicationContext(), 40);
         int screenHeight = DensityUtils.dp2px(getApplicationContext(), 720);
         editMapTreeView.setTreeLayoutManager(new RightTreeLayoutManager(dx, dy, screenHeight));
+
+//        Bundle extras = getIntent().getExtras();
+//        hashSet =(HashSet) extras.getSerializable("id");
+//        if (hashSet != null) {
+//            for (Object hashEle : hashSet) {
+//                String element = hashEle.toString();
+//                element = element.replaceAll("\\D","");
+//                list.add(element);
+//            }
+//        }
 
         editMapTreeView.setTreeViewItemLongClick(new TreeViewItemLongClick() {
             @Override
@@ -196,43 +220,24 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
             }
         });
 
-        editMapTreeView.setTreeViewItemClick(new TreeViewItemClick() {
-            @Override
-            public void onItemClick(View item) {
-                textMsg.setText("设备编号：" + getCurrentFocusNode().value + "漏电值：" + "100mA" + "漏电阈值" + "50mA");
-            }
-        });
-/**
- * 存储图的数据
- */
-//        saveData.setOnClickListener(new View.OnClickListener() {
+//        editMapTreeView.setTreeViewItemClick(new TreeViewItemClick() {
 //            @Override
-//            public void onClick(View v) {
-//                Node nodeData = new Node();
-//                NodeModel rootModel = editMapTreeView.getTreeModel().getRootNode();
-//                Deque<NodeModel> queue = new ArrayDeque<>();
-//                queue.offer(rootModel);
-//                while(!queue.isEmpty()) {
-//                    rootModel = queue.poll();
-//                    NodeView rootView = (NodeView) editMapTreeView.findNodeViewFromNodeModel(rootModel);
-//                    int left = rootView.getLeft();
-//                    int top = rootView.getTop();
-//                    int right = rootView.getRight();
-//                    int bottom = rootView.getBottom();
-//                    nodeData.setValue((String) rootModel.getValue());
-//                    nodeData.setParentNode(rootModel.parentNode);
-//                    nodeData.setChildNodes(rootModel.childNodes);
-//                    nodeData.setLeft(left);
-//                    nodeData.setTop(top);
-//                    nodeData.setRight(right);
-//                    nodeData.setBottom(bottom);
-//                    nodeData.save();
-                    /*
-                    * */
-//                    LinkedList<NodeModel<String>> childNodes = rootModel.childNodes;
-//                    for (NodeModel<String> child : childNodes) {
-//                        queue.offer(child);
+//            public void onItemClick(View item) {
+//                i = 0;
+//                DeviceID = getCurrentFocusNode().value;
+//                if (DeviceID.matches("[0-9]{8}")) {
+//                    connectSocket.setDeviceID(DeviceID);
+//                    try {
+//                        connectSocket.getSocket().sendUrgentData(0xFF);
+//                        connectSocket.leakquery();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        connectSocket.leakquery();
 //                    }
+////                    startTimer();
+//                } else {
+//                    textMsg.setText("设备编号: " + getCurrentFocusNode().getValue());
+//                    Toast.makeText(MainActivity.this, "该设备编号不合法", Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //        });
@@ -240,6 +245,27 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         final int screenWidth = dm.widthPixels;
         final int screenHeight1 = dm.heightPixels - 50;
+
+        /**
+         * warning测试按钮的点击事件
+         */
+        movableBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NodeModel<String> rootNode = editMapTreeView.getTreeModel().getRootNode();
+                Deque<NodeModel<String>> deque = new ArrayDeque<>();
+                deque.offer(rootNode);
+                while (!deque.isEmpty()) {
+                    NodeModel<String> poll = deque.poll();
+                    editMapTreeView.findNodeViewFromNodeModel(poll).setBackgroundResource(R.drawable.node_view_bg);
+                    LinkedList<NodeModel<String>> childNodes = poll.getChildNodes();
+                    for (NodeModel<String> childNode : childNodes) {
+                        deque.offer(childNode);
+                    }
+                }
+                tempList.clear();
+            }
+        });
         movableBtn.setOnTouchListener(new View.OnTouchListener() {
             int lastX, lastY; //记录移动的最后的位置
 
@@ -290,6 +316,23 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
 
         initPresenter();
         //TODO 需要进入文件时对焦中心
+        tempList.addAll(list);
+        for (int i = 0; i < tempList.size(); i++) {
+            NodeModel<String> rootNode = editMapTreeView.getTreeModel().getRootNode();
+            Deque<NodeModel<String>> deque = new ArrayDeque<>();
+            deque.offer(rootNode);
+            while (!deque.isEmpty()) {
+                NodeModel<String> poll = deque.poll();
+                if (poll.getValue().equals(tempList.get(i))) {
+                    editMapTreeView.findNodeViewFromNodeModel(poll).setBackgroundResource(R.drawable.node_view_br);
+                } else {
+                    LinkedList<NodeModel<String>> childNodes = poll.getChildNodes();
+                    for (NodeModel<String> childNode : childNodes) {
+                        deque.offer(childNode);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -311,15 +354,11 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         mEditMapPresenter = new EditMapPresenter(this);
         mEditMapPresenter.start();
 
-//        Intent intent = getIntent();
         Intent intent = new Intent();
         intent.setData(Uri.parse(Environment.getExternalStorageDirectory().getPath() +
                 AppConstants.owant_maps + "保存成功.owant"));
         Uri data = intent.getData();
         File file = new File(data.toString());
-//        if (data != null) {
-//        if (data.getPath().equals(Environment.getExternalStorageDirectory().getPath() +
-//                AppConstants.owant_maps + "保存成功.owant"))
         if (file.exists()) {
             final String path = data.getPath();
             //加载owant的文件路径
@@ -362,11 +401,35 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     }
 
     @Override
-    public void showAddSubNoteDialogThird() {
-        if (editMapTreeView.getCurrentFocusNode().getParentNode() == null) {
-            Toast.makeText(this, getString(com.owant.thinkmap.R.string.cannot_add_second_node), Toast.LENGTH_SHORT)
-                    .show();
-        } else if (insertSubNodeDialog == null) {
+    public void showInsertMainNoteDialog() {
+        if (insertMainNodeDialog == null) {
+            LayoutInflater factory = LayoutInflater.from(this);
+            View inflate = factory.inflate(com.owant.thinkmap.R.layout.dialog_edit_input, null);
+            insertMainNodeDialog = new EditAlertDialog(MainActivity.this);
+            insertMainNodeDialog.setView(inflate);
+            insertMainNodeDialog.setDivTitle(getString(com.owant.thinkmap.R.string.tab_add_main));
+            insertMainNodeDialog.addEnterCallBack(new EditAlertDialog.EnterCallBack() {
+                @Override
+                public void onEdit(String value) {
+                    if (TextUtils.isEmpty(value)) {
+                        value = getString(com.owant.thinkmap.R.string.tab_add_main);
+                    }
+                    editMapTreeView.insertMainNode(value);
+                    clearDialog(insertMainNodeDialog);
+                    if (insertMainNodeDialog != null && insertMainNodeDialog.isShowing())
+                        insertMainNodeDialog.dismiss();
+                }
+            });
+            insertMainNodeDialog.show();
+        } else {
+            insertMainNodeDialog.clearInput();
+            insertMainNodeDialog.show();
+        }
+    }
+
+    @Override
+    public void showInsertSubNoteDialog() {
+        if (insertSubNodeDialog == null) {
             LayoutInflater factory = LayoutInflater.from(this);
             View inflate = factory.inflate(com.owant.thinkmap.R.layout.dialog_edit_input, null);
             insertSubNodeDialog = new EditAlertDialog(MainActivity.this);
@@ -378,7 +441,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
                     if (TextUtils.isEmpty(value)) {
                         value = getString(com.owant.thinkmap.R.string.tab_code_mode);
                     }
-                    editMapTreeView.insetSubNode(value);
+                    editMapTreeView.insertSubNode(value);
                     clearDialog(insertSubNodeDialog);
                     if (insertSubNodeDialog != null && insertSubNodeDialog.isShowing()) insertSubNodeDialog.dismiss();
                 }
@@ -391,7 +454,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     }
 
     @Override
-    public void showAddSubNoteDialogSecond() {
+    public void showAddNoteDialog() {
         if (editMapTreeView.getCurrentFocusNode().getParentNode() == null) {
             Toast.makeText(this, getString(com.owant.thinkmap.R.string.cannot_add_second_node), Toast.LENGTH_SHORT)
                     .show();
@@ -420,7 +483,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
     }
 
     @Override
-    public void showAddSubNoteDialogFirst() {
+    public void showAddSubNoteDialog() {
         if (addSubNodeDialog == null) {
             LayoutInflater factory = LayoutInflater.from(this);
             View inflate = factory.inflate(com.owant.thinkmap.R.layout.dialog_edit_input, null);
@@ -470,11 +533,12 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
             public void onDelete() {
             }
         });
+
         editNodeDialog.addEnterCallBack(new EditAlertDialog.EnterCallBack() {
             @Override
             public void onEdit(String value) {
                 if (TextUtils.isEmpty(value)) {
-                    value = getString(com.owant.thinkmap.R.string.transformer);
+                    value = getString(R.string.save_success);
                 }
                 editMapTreeView.changeNodeValue(getCurrentFocusNode(), value);
                 clearDialog(editNodeDialog);
@@ -558,6 +622,7 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
 
     @Override
     public void finishActivity() {
+        Log.e("finishActivity", "");
         MainActivity.this.finish();
     }
 
@@ -577,9 +642,9 @@ public class MainActivity extends BaseActivity implements EditMapContract.View {
         return super.onKeyDown(keyCode, event);
     }
 
-
     @Override
     protected void onDestroy() {
+        Log.e("onDestroy", "");
         mEditMapPresenter.onRecycle();
         super.onDestroy();
     }

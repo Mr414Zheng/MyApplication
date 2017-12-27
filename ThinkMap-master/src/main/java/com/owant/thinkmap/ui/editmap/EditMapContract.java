@@ -36,19 +36,24 @@ public interface EditMapContract {
         void createDefaultTreeModel();
 
         /**
-         * 添加三级节点
+         * 插入主干线节点
          */
-        void addSubNoteThird();
+        void insertMainNote();
 
         /**
-         * 添加二级节点
+         * 插入子节点
          */
-        void addSubNoteSecond();
+        void insertSubNote();
 
         /**
-         * 添加一级节点
+         * 添加同层节点
          */
-        void addSubNoteFirst();
+        void addNote();
+
+        /**
+         * 添加子节点
+         */
+        void addSubNote();
 
         /**
          * 编辑设备
@@ -114,20 +119,24 @@ public interface EditMapContract {
         void hideLoadingFile();
 
         /**
-         * 显示添加三级节点
+         * 显示插入主干线节点
          */
-
-        void showAddSubNoteDialogThird();
-
-        /**
-         * 显示添加二级节点
-         */
-        void showAddSubNoteDialogSecond();
+        void showInsertMainNoteDialog();
 
         /**
-         * 显示添加一级节点
+         * 显示插入子节点节点
          */
-        void showAddSubNoteDialogFirst();
+        void showInsertSubNoteDialog();
+
+        /**
+         * 显示添加同层节点
+         */
+        void showAddNoteDialog();
+
+        /**
+         * 显示添加子节点
+         */
+        void showAddSubNoteDialog();
 
         /**
          * 显示编辑节点
